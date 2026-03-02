@@ -1,0 +1,8 @@
+node_modules
+.env
+.env.exmaple
+.conf
+.sec
+.git
+package-lock.json
+package.json
