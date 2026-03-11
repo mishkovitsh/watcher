@@ -38,7 +38,7 @@ services:
       - public_net
 
   watcher-app:
-    build: .. # Putanja do tvog Dockerfile-a koji je u rootu
+    build: ..
     container_name: watcher_app
     restart: unless-stopped
     env_file: ../.env
@@ -51,13 +51,15 @@ services:
 
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:v2
+    container_name: pocket-id  # DODANO: Da ga Caddy može naći pod ovim imenom
     restart: unless-stopped
     env_file: .env
     ports:
-      - 1411:1411
+      - "1411:1411"
     volumes:
       - "./data:/app/data"
-    # Optional healthcheck
+    networks:  # DODANO: Bez ovoga ga Caddy ne vidi!
+      - public_net
     healthcheck:
       test: [ "CMD", "/app/pocket-id", "healthcheck" ]
       interval: 1m30s
@@ -67,8 +69,9 @@ services:
 
 networks:
   internal_net:
-    internal: true
+    driver: bridge # Maknuo sam 'internal: true' jer nekad zna blokirati DNS lookup
   public_net:
+    driver: bridge
 
 volumes:
   postgres_data:

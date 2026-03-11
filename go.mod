@@ -1,10 +1,11 @@
-module main
+module watcher
 
-go 1.25.5
+go 1.25.0
 
 require (
 	github.com/gin-gonic/gin v1.12.0
-	github.com/mattn/go-sqlite3 v1.14.34
+	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.11.2
 )
 
 require (

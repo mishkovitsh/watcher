@@ -135,22 +135,32 @@
     </style>
   </head>
   <body>
-    <section class="header-container">
-      <div class="header-box">
+<section class="header-container">
+  <p>Welcome, {{ .User }}</p>
+    <div class="header-box">
         <h3>Total Websites</h3>
-        <span class="website-num">0</span>
-      </div>
-
-      <div class="header-box">
-        <h3>Outage Detected</h3>
-        <span class="website-num">0</span>
-      </div>
-
-      <div class="header-box">
-        <h3>Total Alerts</h3>
-        <span class="website-num">0</span>
-      </div>
+        <span class="website-num">{{ .Total }}</span>
+    </div>
     </section>
+
+<div class="monitor-list" id="monitor-list">
+    {{ range .Websites }}
+    <div class="monitor-card" id="site-{{ .ID }}">
+        <span class="site-name">{{ .Name }}</span>
+        <span class="site-url">{{ .URL }}</span>
+        <span class="status-text" style="color: {{ if eq .Status "UP" }}var(--accent-up){{ else }}var(--accent-down){{ end }}">
+            {{ .Status }}
+        </span>
+        <div style="text-align: right">
+            <button class="delete-btn" hx-delete="/api/monitors/{{ .ID }}" hx-target="#site-{{ .ID }}" hx-swap="outerHTML">
+                Delete
+            </button>
+        </div>
+    </div>
+    {{ else }}
+    <p style="text-align: center; color: var(--tx-muted); padding: 20px;">Nema aktivnih monitora. Dodaj prvi!</p>
+    {{ end }}
+</div>
 
     <section class="website-table">
       <div class="monitor-header">
